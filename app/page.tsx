@@ -1,4 +1,4 @@
-import TypeWriter from "@/components/ui/TypeWriter";
+import TypeWriter from "@/components/TypeWriter";
 import { Button } from "@/components/ui/button";
 import { IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
