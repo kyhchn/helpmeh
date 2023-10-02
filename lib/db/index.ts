@@ -3,8 +3,8 @@ import { drizzle } from "drizzle-orm/neon-http";
 
 neonConfig.fetchConnectionCache = true;
 
-if (!process.env.DATABASE_URL) {
+if (!process.env.NEXT_PUBLIC_DATABASE_URL) {
   throw new Error("Missing DATABASE_URL environment variable");
 }
-const sql = neon(process.env.DRIZZLE_DATABASE_URL!);
-const db = drizzle(sql);
+const sql = neon(process.env.NEXT_PUBLIC_DATABASE_URL!);
+export const db = drizzle(sql);
