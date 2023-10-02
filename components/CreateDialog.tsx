@@ -8,11 +8,36 @@ import {
 import { IoMdAdd } from "react-icons/io";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-
+import { useMutation } from "react-query";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 type Props = {};
 
 const CreateDialog = (props: Props) => {
   const [input, setInput] = React.useState("");
+  const createNotebook = useMutation({
+    mutationFn: async () => {
+      const res = await axios.post("/api/notes/create", {
+        name: input,
+      });
+      return res.data;
+    },
+  });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (input === "") {
+      window.alert("Please enter a name");
+      return;
+    }
+    createNotebook.mutate(undefined, {
+      onSuccess: ({ note_id }) => {
+        console.log("created new note:" + note_id);
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    });
+  };
   return (
     <Dialog>
       <DialogTrigger>
@@ -23,19 +48,28 @@ const CreateDialog = (props: Props) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>konsz</DialogHeader>
-        <Input
-          placeholder="Name.."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        ></Input>
-        <div className="flex flex-row justify-end items-center gap-4">
-          <Button type="reset" variant={"secondary"}>
-            Cancel
-          </Button>
-          <Button type="submit" className="bg-teal-600">
-            Create
-          </Button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <Input
+            placeholder="Name.."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          ></Input>
+          <div className="flex flex-row justify-end items-center gap-4 mt-4">
+            <Button type="reset" variant={"secondary"}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-teal-600"
+              disabled={createNotebook.isLoading}
+            >
+              {createNotebook.isLoading && (
+                <Loader2 className="animate-spin" size={16} />
+              )}
+              Create
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
