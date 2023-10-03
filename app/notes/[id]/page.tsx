@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import TipTapEditor from "@/components/TipTapEditor";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 type Props = {
   params: {
     id: string;
