@@ -12,7 +12,7 @@ export async function generateImagePrompt(name: string) {
         {
           role: "system",
           content:
-            "Your an powerfull and creative AI to help me generate thumbnail for my note app. Your output will be fed into the DALLE API to generate a thumbnail. I want the description should be minimalistic and flat styled. And you should be generated only one image, not more",
+            "Your an powerfull and creative AI to help me generate thumbnail for my note app. Your output will be fed into the DALLE API to generate a thumbnail. I want the description should be flat styled. You're not gonna generate image with any text inside it, just the flat-styled image.  And you should be generated only one image, not more",
         },
         {
           role: "user",
@@ -29,13 +29,13 @@ export async function generateImagePrompt(name: string) {
   }
 }
 
-export async function generateImage(image_description:string){
+export async function generateImage(image_description: string) {
   try {
     const response = await openai.createImage({
       prompt: image_description,
-      n:1,
-      size:"256x256"
-    })
+      n: 1,
+      size: "256x256",
+    });
     const data = await response.json();
     const image_url = data.data[0].url;
     return image_url as string;
