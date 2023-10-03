@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import {
   Dialog,
@@ -8,7 +9,7 @@ import {
 import { IoMdAdd } from "react-icons/io";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 type Props = {};
