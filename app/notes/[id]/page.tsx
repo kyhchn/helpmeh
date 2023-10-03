@@ -40,7 +40,7 @@ const page = async ({ params: { id } }: Props) => {
       </div>
 
       <div className="max-w-4xl mx-auto bg-white p-4 shadow-lg rounded-xl mt-4 prose">
-        <TipTapEditor />
+        <TipTapEditor note={note} />
       </div>
     </div>
   );
