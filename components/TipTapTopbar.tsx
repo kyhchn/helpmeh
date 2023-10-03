@@ -31,6 +31,7 @@ function TipTapTopbar({ editor }: Props) {
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
+        className={editor.isActive("bold") ? "is-active" : ""}
       >
         <Bold />
       </button>
