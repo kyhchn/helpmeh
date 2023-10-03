@@ -6,16 +6,32 @@ import TipTapTopbar from "./TipTapTopbar";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { NoteType } from "@/lib/db/schema";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-
+import { useCompletion } from "ai/react";
+import Text from "@tiptap/extension-text";
 type Props = {
   note: NoteType;
 };
 const TipTapEditor = ({ note }: Props) => {
   const [content, setContent] = React.useState(note.content);
+  const { complete, completion } = useCompletion({
+    api: "/api/completion",
+  });
+  const customText = Text.extend({
+    addKeyboardShortcuts() {
+      return {
+        "Shift-x": () => {
+          const words = this.editor.getText().split(" ").slice(-30).join(" ");
+          lastCompletion.current = "";
+          complete(words);
+          return true;
+        },
+      };
+    },
+  });
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, customText],
     autofocus: true,
     content: content,
     onUpdate: ({ editor }) => {
@@ -30,6 +46,17 @@ const TipTapEditor = ({ note }: Props) => {
       });
     },
   });
+  const lastCompletion = React.useRef("");
+
+  useEffect(() => {
+    if (!completion || !editor) return;
+    console.log(completion);
+    console.log(lastCompletion.current.length);
+    const diff = completion.slice(lastCompletion.current.length);
+    console.log("diff ", diff);
+    lastCompletion.current = completion;
+    editor.commands.insertContent(diff);
+  }, [completion]);
 
   useEffect(() => {
     const update = setTimeout(() => {
@@ -56,9 +83,13 @@ const TipTapEditor = ({ note }: Props) => {
         </Button>
       </div>
 
-      <div>
+      <div className="w-full prose-sm">
         <EditorContent editor={editor} />
       </div>
+      <div className="h-2"></div>
+      <span>
+        Press: <kbd>Shift+x</kbd> to autocomplete with AI
+      </span>
     </>
   );
 };
