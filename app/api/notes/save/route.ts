@@ -27,6 +27,13 @@ export async function POST(req: Request) {
         { status: 200 }
       );
     }
+
+    return NextResponse.json(
+      {
+        message: "Note wasn't updated",
+      },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       {

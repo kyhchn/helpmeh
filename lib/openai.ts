@@ -12,7 +12,7 @@ export async function generateImagePrompt(name: string) {
         {
           role: "system",
           content:
-            "Your an powerfull and creative AI to help me generate thumbnail for my note app. Your output will be fed into the DALLE API to generate a thumbnail. I want the description should be flat styled. You're not gonna generate image with any text inside it, just the flat-styled image.  And you should be generated only one image, not more",
+            "Your an powerfull and creative AI to help me generate thumbnail for my note app. Your output will be fed into the DALLE API to generate a thumbnail. I want the description should be flat styled. You're not gonna generate image with any text inside it, just the flat-styled image. And you should be generated only one image, not more. Thanks a lot.",
         },
         {
           role: "user",
@@ -37,7 +37,11 @@ export async function generateImage(image_description: string) {
       size: "256x256",
     });
     const data = await response.json();
+    console.log(data);
     const image_url = data.data[0].url;
+    if (!image_url) {
+      throw new Error(data.error.message);
+    }
     return image_url as string;
   } catch (error) {
     console.error(error);
