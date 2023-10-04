@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         status: 500,
       });
 
-    const note_id = await db
+    const notes = await db
       .insert($notes)
       .values({
         name: name,
@@ -29,10 +29,11 @@ export async function POST(req: Request) {
       })
       .returning({
         insertedId: $notes.id,
+        imageUrl: $notes.imageUrl,
       });
-    console.log(note_id);
     return NextResponse.json({
-      note_id: note_id[0].insertedId,
+      note_id: notes[0].insertedId,
+      image_url: notes[0].imageUrl,
     });
   } catch (error: any) {
     console.error(error);
