@@ -17,7 +17,7 @@ export default function Home() {
         <div className="flex justify-center">
           <Link href="/dashboard">
             <Button className="gap-2">
-              Let's Go
+              {"Let's Go"}
               <IoIosArrowForward />
             </Button>
           </Link>
