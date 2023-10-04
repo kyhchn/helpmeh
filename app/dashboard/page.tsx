@@ -8,6 +8,7 @@ import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Image from "next/image";
+export const revalidate = 120;
 type Props = {};
 
 const Page = async (props: Props) => {
@@ -31,13 +32,12 @@ const Page = async (props: Props) => {
           <CreateDialog />
           {notes.map((note, index) => (
             <Link href={"/notes/" + note.id} key={index}>
-              <div className="w-full rounded-xl overflow-hidden shadow-sm flex flex-col hover:-translate-y-1 transition hover:shadow-xl ">
-                <img
-                  src={note.imageUrl!}
-                  alt={note.name}
-                  className="w-full flex-1"
-                />
-                <div className="w-full bg-white opacity-95 p-2">
+              <div className="w-full rounded-xl overflow-hidden shadow-sm flex flex-col hover:-translate-y-1 transition hover:shadow-xl h-full">
+                <div className="relative w-full sm:h-44 md:h-52">
+                  <Image alt={note.name} src={note.imageUrl!} fill />
+                </div>
+
+                <div className="w-full bg-white opacity-95 p-2 flex-1">
                   <p className="text-black">{note.name}</p>
                 </div>
               </div>

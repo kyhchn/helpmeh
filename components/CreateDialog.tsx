@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import {
   Dialog,
@@ -12,10 +12,12 @@ import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 type Props = {};
 
 const CreateDialog = (props: Props) => {
   const [input, setInput] = React.useState("");
+  const router = useRouter();
   const createNotebook = useMutation({
     mutationFn: async () => {
       const res = await axios.post("/api/notes/create", {
@@ -24,6 +26,16 @@ const CreateDialog = (props: Props) => {
       return res.data;
     },
   });
+  const uploadImage = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await axios.post("/api/notes/upload", {
+        imgUrl: data.imageUrl,
+        noteId: data.noteId,
+      });
+      return res.data;
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input === "") {
@@ -31,8 +43,24 @@ const CreateDialog = (props: Props) => {
       return;
     }
     createNotebook.mutate(undefined, {
-      onSuccess: ({ note_id }) => {
+      onSuccess: ({ note_id, image_url }) => {
         console.log("created new note:" + note_id);
+        if (image_url && note_id) {
+          uploadImage.mutate(
+            {
+              imageUrl: image_url,
+              noteId: note_id,
+            },
+            {
+              onSuccess: (data) => {
+                router.push(`/notes/${note_id}`);
+              },
+              onError: (err) => {
+                console.log(err);
+              },
+            }
+          );
+        }
       },
       onError: (err) => {
         console.log(err);
@@ -44,11 +72,11 @@ const CreateDialog = (props: Props) => {
       <DialogTrigger>
         <div className="flex border-dashed border-2 border-teal-500 h-full rounded-lg items-center justify-center flex-col sm:flex-row p-4 hover:shadow-xl hover:-translate-y-1 transition ">
           <IoMdAdd className="text-3xl text-teal-500" />
-          <h2 className="font-semibold text-teal-500">kons</h2>
+          <h2 className="font-semibold text-teal-500">Create</h2>
         </div>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>konsz</DialogHeader>
+        <DialogHeader>Create Note</DialogHeader>
         <form onSubmit={handleSubmit}>
           <Input
             placeholder="Name.."
@@ -62,9 +90,9 @@ const CreateDialog = (props: Props) => {
             <Button
               type="submit"
               className="bg-teal-600"
-              disabled={createNotebook.isLoading}
+              disabled={createNotebook.isLoading || uploadImage.isLoading}
             >
-              {createNotebook.isLoading && (
+              {(createNotebook.isLoading || uploadImage.isLoading) && (
                 <Loader2 className="animate-spin" size={16} />
               )}
               Create
