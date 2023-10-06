@@ -8,6 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import TipTapEditor from "@/components/TipTapEditor";
 import { DeleteButon } from "@/components/DeleteButton";
+import axios from "axios";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 type Props = {
@@ -20,10 +21,8 @@ const page = async ({ params: { id } }: Props) => {
   const { userId } = auth();
   if (!userId) return redirect("/dashboard");
 
-  const notes = await db
-    .select()
-    .from($notes)
-    .where(and(eq($notes.userId, userId!), eq($notes.id, parseInt(id))));
+  const responses = await axios.get(`/api/notes/id?=${id}`);
+  const notes = responses.data.note;
   if (notes.length === 0) return redirect("/dashboard");
   const note = notes[0];
 
