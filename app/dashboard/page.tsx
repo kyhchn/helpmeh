@@ -31,7 +31,7 @@ const Page = async (props: Props) => {
         <div className="grid sm:grid-cols-3 md:grid-cols-5 grid-cols-1 gap-4">
           <CreateDialog />
           {notes.map((note, index) => (
-            <Link href={"/notes/" + note.id} key={index} prefetch={false}>
+            <Link href={"/notes/" + note.id} key={index}>
               <div className="w-full rounded-xl overflow-hidden shadow-sm flex flex-col hover:-translate-y-1 transition hover:shadow-xl h-full">
                 <div className="relative w-full sm:h-44 md:h-52">
                   <Image alt={note.name} src={note.imageUrl!} fill />
