@@ -3,18 +3,11 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
-export const runtime = "edge";
 export async function POST(req: Request) {
   try {
     const { imgUrl, noteId } = await req.json();
     if (!noteId)
       return new NextResponse("No note id provided", { status: 400 });
-
-    const note = (
-      await db.select().from($notes).where(eq($notes.id, noteId))
-    ).shift();
-
-    if (!note) return new NextResponse("Note not found", { status: 404 });
 
     if (!imgUrl)
       return new NextResponse("No image url provided", { status: 400 });
