@@ -8,7 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import TipTapEditor from "@/components/TipTapEditor";
 import { DeleteButon } from "@/components/DeleteButton";
-export const revalidate = 1;
+export const revalidate = 0;
 type Props = {
   params: {
     id: string;
