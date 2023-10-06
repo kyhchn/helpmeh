@@ -13,9 +13,12 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useToast } from "./ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 type Props = {};
 
 const CreateDialog = (props: Props) => {
+  const { toast } = useToast();
   const [input, setInput] = React.useState("");
   const router = useRouter();
   const createNotebook = useMutation({
@@ -57,13 +60,23 @@ const CreateDialog = (props: Props) => {
               },
               onError: (err) => {
                 console.log(err);
+                toast({
+                  variant: "destructive",
+                  title: "Failed to upload image",
+                  description: "Please contact the developer.",
+                });
               },
             }
           );
         }
       },
       onError: (err) => {
-        console.log(err);
+        toast({
+          variant: "destructive",
+          title: "Failed to create note",
+          description:
+            "There was a problem, maybe the server has reach the limit :)",
+        });
       },
     });
   };

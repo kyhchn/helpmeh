@@ -4,10 +4,10 @@ import React from "react";
 import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
 import { and, eq } from "drizzle-orm";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import TipTapEditor from "@/components/TipTapEditor";
+import { DeleteButon } from "@/components/DeleteButton";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 type Props = {
@@ -26,6 +26,7 @@ const page = async ({ params: { id } }: Props) => {
     .where(and(eq($notes.userId, userId!), eq($notes.id, parseInt(id))));
   if (notes.length === 0) return redirect("/dashboard");
   const note = notes[0];
+
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl mx-auto bg-white p-4 shadow-lg rounded-xl mt-8">
@@ -36,8 +37,7 @@ const page = async ({ params: { id } }: Props) => {
             </Link>
             {note.name}
           </div>
-
-          <Button className="bg-red-500 hover:bg-red-400">Delete</Button>
+          <DeleteButon noteId={note.id} />
         </div>
       </div>
 
