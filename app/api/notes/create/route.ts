@@ -3,6 +3,8 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
+export const runtime = 'edge';
+
 export async function POST(req: Request) {
   try {
     const { userId } = auth();
