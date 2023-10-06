@@ -8,9 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import TipTapEditor from "@/components/TipTapEditor";
 import { DeleteButon } from "@/components/DeleteButton";
-import { revalidatePath } from "next/cache";
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
 type Props = {
   params: {
     id: string;
@@ -25,7 +23,6 @@ const page = async ({ params: { id } }: Props) => {
     .select()
     .from($notes)
     .where(and(eq($notes.userId, userId!), eq($notes.id, parseInt(id))));
-  revalidatePath("/notes/" + id);
   if (notes.length === 0) return redirect("/dashboard");
   const note = notes[0];
 
