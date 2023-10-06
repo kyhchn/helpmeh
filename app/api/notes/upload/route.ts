@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+export const runtime = "edge";
 export async function POST(req: Request) {
   try {
     const { imgUrl, noteId } = await req.json();
