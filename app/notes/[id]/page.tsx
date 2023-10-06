@@ -1,4 +1,5 @@
-import { auth } from "@clerk/nextjs";
+"use client";
+import { auth, useAuth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React from "react";
 import { db } from "@/lib/db/index";
@@ -8,7 +9,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import TipTapEditor from "@/components/TipTapEditor";
 import { DeleteButon } from "@/components/DeleteButton";
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 type Props = {
   params: {
     id: string;
@@ -16,8 +17,8 @@ type Props = {
 };
 
 const page = async ({ params: { id } }: Props) => {
-  const { userId } = auth();
-  if (!userId) return redirect("/dashboard");
+  const { isLoaded, userId } = useAuth();
+  if (!isLoaded || !userId) return redirect("/dashboard");
 
   const notes = await db
     .select()
