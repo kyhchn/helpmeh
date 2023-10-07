@@ -1,15 +1,14 @@
 import { generateImage, generateImagePrompt } from "@/lib/openai";
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
-export const runtime = 'edge';
+import { getAuth } from "@clerk/nextjs/server";
+export const runtime = "edge";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { userId } = auth();
+    const { userId } = getAuth(req);
     if (!userId) return new NextResponse("Unauthorized", { status: 401 });
-
     const body = await req.json();
     const { name } = body;
     const image_description = await generateImagePrompt(name);
