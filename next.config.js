@@ -18,6 +18,12 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    serverActions: true,
+  },
+  api: {
+    bodyParser: false,
+  },
 };
 
 module.exports = nextConfig;
