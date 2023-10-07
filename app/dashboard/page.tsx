@@ -8,7 +8,7 @@ import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Image from "next/image";
-export const revalidate = 120;
+export const revalidate = 0;
 type Props = {};
 
 const Page = async (props: Props) => {
@@ -24,10 +24,10 @@ const Page = async (props: Props) => {
           <Link href="/">
             <Button className="bg-teal-500">Back</Button>
           </Link>
-          <h1>Notes</h1>
+          <h1 className="text-xl">Notes</h1>
           <UserButton afterSignOutUrl="/" />
         </div>
-        <Separator className="my-3" />
+        <Separator className="my-3 bg-slate-300" />
         <div className="grid sm:grid-cols-3 md:grid-cols-5 grid-cols-1 gap-4">
           <CreateDialog />
           {notes.map((note, index) => (

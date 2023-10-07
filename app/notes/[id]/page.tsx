@@ -1,14 +1,14 @@
 "use client";
-import { auth, useAuth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React from "react";
 import { db } from "@/lib/db/index";
 import { $notes } from "@/lib/db/schema";
 import { and, eq } from "drizzle-orm";
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import TipTapEditor from "@/components/TipTapEditor";
 import { DeleteButon } from "@/components/DeleteButton";
+import { useRouter } from "next/navigation";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 };
 
 const page = async ({ params: { id } }: Props) => {
+  const router = useRouter();
   const { isLoaded, userId } = useAuth();
   if (!isLoaded || !userId) return redirect("/dashboard");
 
@@ -33,9 +34,14 @@ const page = async ({ params: { id } }: Props) => {
       <div className="max-w-4xl mx-auto bg-white p-4 shadow-lg rounded-xl mt-8">
         <div className="flex justify-between items-center">
           <div className="flex gap-3">
-            <Link href="/dashboard">
+            <button
+              onClick={() => {
+                router.back();
+                router.refresh();
+              }}
+            >
               <ArrowLeft />
-            </Link>
+            </button>
             {note.name}
           </div>
           <DeleteButon noteId={note.id} />
