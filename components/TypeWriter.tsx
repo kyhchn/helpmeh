@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Typewriter from "typewriter-effect";
 type Props = {};
 
@@ -14,6 +14,7 @@ const TypeWriter = (props: Props) => {
           .pauseFor(1000)
           .deleteAll()
           .typeString("🐑 Powered by AI.")
+          .pauseFor(1000)
           .start();
       }}
     />
