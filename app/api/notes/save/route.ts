@@ -7,7 +7,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { content, id } = body;
-    console.log(body);
     if (!content && !id)
       return new NextResponse("Bad request", { status: 400 });
 
