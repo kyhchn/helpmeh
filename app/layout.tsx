@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Provider from "@/components/Provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,14 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <Provider>
-          <body className={inter.className+' bg-gradient-to-r from-yellow-100 to-teal-100'}>{children}</body>
+          <body
+            className={
+              inter.className + " bg-gradient-to-r from-yellow-100 to-teal-100"
+            }
+          >
+            <main>{children}</main>
+            <Toaster />
+          </body>
         </Provider>
       </html>
     </ClerkProvider>

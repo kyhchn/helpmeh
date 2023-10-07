@@ -14,7 +14,6 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
-import { ToastAction } from "@radix-ui/react-toast";
 type Props = {};
 
 const CreateDialog = (props: Props) => {
@@ -23,9 +22,17 @@ const CreateDialog = (props: Props) => {
   const router = useRouter();
   const createNotebook = useMutation({
     mutationFn: async () => {
-      const res = await axios.post("/api/notes/create", {
-        name: input,
-      });
+      const res = await axios.post(
+        "/api/notes/create",
+        {
+          name: input,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       return res.data;
     },
   });
@@ -70,12 +77,12 @@ const CreateDialog = (props: Props) => {
           );
         }
       },
-      onError: (err) => {
+      onError: (err: any) => {
         toast({
           variant: "destructive",
           title: "Failed to create note",
           description:
-            "There was a problem, maybe the server has reach the limit :)",
+            err.response?.data?.message || "Please contact the developer.",
         });
       },
     });
@@ -97,9 +104,6 @@ const CreateDialog = (props: Props) => {
             onChange={(e) => setInput(e.target.value)}
           ></Input>
           <div className="flex flex-row justify-end items-center gap-4 mt-4">
-            <Button type="reset" variant={"secondary"}>
-              Cancel
-            </Button>
             <Button
               type="submit"
               className="bg-teal-600"
