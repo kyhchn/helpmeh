@@ -23,6 +23,15 @@ export default function Home() {
           </Link>
         </div>
       </div>
+
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 font-semibold text-slate-600">
+        <p>
+          Made with ❤️ by{" "}
+          <a href="https://kyhchn.vercel.app" className="text-pink-600 hover:text-pink-400 transition-colors">
+            Kyhchn
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
