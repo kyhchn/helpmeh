@@ -30,7 +30,7 @@ const page = async ({ params: { id } }: Props) => {
   const note = notes[0];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen px-5">
       <div className="max-w-4xl mx-auto bg-white p-4 shadow-lg rounded-xl mt-8">
         <div className="flex justify-between items-center">
           <div className="flex gap-3">

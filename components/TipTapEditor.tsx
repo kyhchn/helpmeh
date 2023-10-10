@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useCompletion } from "ai/react";
 import Text from "@tiptap/extension-text";
+import { BsMagic } from "react-icons/bs";
 type Props = {
   note: NoteType;
 };
@@ -38,6 +39,14 @@ const TipTapEditor = ({ note }: Props) => {
       setContent(editor.getHTML());
     },
   });
+
+  const handleMobileCompletion = () => {
+    if (!editor) return;
+    const words = editor.getText().split(" ").slice(-30).join(" ");
+    lastCompletion.current = "";
+    complete(words);
+    return true;
+  };
   const saveNote = useMutation({
     mutationFn: async () => {
       const response = await axios.post("/api/notes/save", {
@@ -82,14 +91,18 @@ const TipTapEditor = ({ note }: Props) => {
           Save
         </Button>
       </div>
-
       <div className="w-full prose-sm">
         <EditorContent editor={editor} />
       </div>
-      <div className="h-2"></div>
-      <span>
+      <span className="mt-2 hidden md:block">
         Press: <kbd>Shift+x</kbd> to autocomplete with AI
       </span>
+      <Button
+        className="bg-teal-500 block md:hidden rounded-full"
+        onClick={handleMobileCompletion}
+      >
+        <BsMagic />
+      </Button>
     </>
   );
 };
